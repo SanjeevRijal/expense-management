@@ -2,6 +2,7 @@ from sqlalchemy.orm import relationship
 from config import db
 
 class User(db.Model):
+    __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
@@ -13,6 +14,7 @@ class User(db.Model):
 
 
 class Bill(db.Model):
+    __tablename__ = 'Bill'
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
     spend_type = db.Column(db.String(250), nullable=False)
@@ -21,13 +23,9 @@ class Bill(db.Model):
     what_amount = relationship("User", back_populates="who_spend")
     who_pay = relationship("Split", back_populates="bill_detail")
 
-class Payment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    payment_dict = db.Column(db.JSON, nullable=False)
-    calculation_date= db.Column(db.Date, nullable=False)
-
 
 class Split(db.Model):
+    __tablename__ = 'Split'
     id = db.Column(db.Integer, primary_key=True)
     split_with = db.Column(db.Integer, db.ForeignKey(User.id))
     bill_id = db.Column(db.Integer, db.ForeignKey(Bill.id))
