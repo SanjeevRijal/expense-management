@@ -2,7 +2,7 @@ from sqlalchemy.orm import relationship
 from config import db
 
 class User(db.Model):
-    __tablename__ = "user"
+    __tablename__ = "user_tabel"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
