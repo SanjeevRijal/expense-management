@@ -8,6 +8,12 @@ from flask_mail import Mail
 
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI","sqlite:///Spending.db")
+db = SQLAlchemy()
+db.init_app(app)
+
+
 CORS(app)
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
@@ -20,13 +26,8 @@ app.config['MAIL_USE_SSL'] = True
 
 app.config['SECRET_KEY'] = os.environ.get("flask_key")
 
-app.config["JWT_SECRET_KEY"] = os.environ.get("JWT-Key")
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=30)
+app.config["JWT_SECRET_KEY"] = os.environ.get("WT-Key")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)
 jwt = JWTManager(app)
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI","sqlite:///Spending.db")
-db = SQLAlchemy()
-db.init_app(app)
 
 mail = Mail(app)

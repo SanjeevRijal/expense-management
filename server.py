@@ -1,5 +1,4 @@
 from flask import request, jsonify, redirect
-from model import User, Bill,Split
 from config import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
@@ -30,9 +29,11 @@ def register():
     return "", 200
 
 
-@app.route('/login', methods=[ "POST"])
+@app.route('/login', methods=["POST"])
 def login():
     login_form_data = request.get_json()
+    print("hi")
+    print(login_form_data)
     result = User.query.filter_by(email = login_form_data["userName"].lower()).first()
     if result and check_password_hash(result.password, login_form_data["password"]):
         user_data = {
@@ -40,7 +41,7 @@ def login():
         }
         access_token = create_access_token(identity=result.id)
         return jsonify(user_info = user_data , access_token=access_token,)
-    return "Invalid Username or password", 401
+    return " or password", 500
 
 
 @app.route("/refresh_token", methods=["POST"])
@@ -82,7 +83,6 @@ def get_my_bill():
 
 
 @app.route("/all_bill")
-@jwt_required()
 def get_all_bill():
     all_bills = Bill.query.all()
     all_bills_list = []
@@ -91,7 +91,6 @@ def get_all_bill():
         all_bills_list.append({ "amount":all_bill.amount, "catagory": all_bill.spend_type,
                               "spend_date":date_str,"spenderName":all_bill.what_amount.name})
     return {"allBill":all_bills_list}
-
 
 @app.route("/add_bill", methods=["POST"])
 @jwt_required()
@@ -216,4 +215,5 @@ def chart_data():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run()
+    app.run(debug=True)
+
