@@ -1,10 +1,10 @@
 from flask import request, jsonify, redirect
-from model import User, Bill, Split
-from config import app, db
+from model import User,Bill,Split
+from config import app,db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import timedelta, datetime
-from calculation import *
+from calculation import bill_detail,bill_share_with
 import secrets
 from send_email import send_password_reset_email
 
@@ -191,6 +191,7 @@ def conform_token():
     if user_token == token_requests.reset_token:
         return {"message":"token conformed"}, 200
     return {"error":"someting went wrong"}, 400
+
 
 @app.route("/update_password", methods =["POST"])
 def update_password():

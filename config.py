@@ -8,6 +8,7 @@ from flask_mail import Mail
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get("flask_key")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI","sqlite:///Spending.db")
 db = SQLAlchemy()
@@ -22,12 +23,11 @@ app.config['MAIL_USERNAME'] = os.environ.get("email")
 app.config['MAIL_PASSWORD'] = os.environ.get("password")
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 
-app.config['SECRET_KEY'] = os.environ.get("flask_key")
 
 app.config["JWT_SECRET_KEY"] = os.environ.get("WT-Key")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)
 jwt = JWTManager(app)
 
-mail = Mail(app)

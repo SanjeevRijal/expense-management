@@ -1,4 +1,4 @@
-from model import *
+from model import Bill,Split
 
 
 def bill_detail():
