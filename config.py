@@ -6,7 +6,6 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 from flask_mail import Mail
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("flask_key")
 
@@ -24,7 +23,6 @@ app.config['MAIL_PASSWORD'] = os.environ.get("password")
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
-
 
 
 app.config["JWT_SECRET_KEY"] = os.environ.get("WT-Key")

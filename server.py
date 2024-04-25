@@ -8,8 +8,11 @@ from calculation import bill_detail,bill_share_with
 import secrets
 from send_email import send_password_reset_email
 
+with app.app_context():
+    db.create_all()
 
-@app.route("/register", methods= ["POST"])
+
+@app.route("/register", methods=["POST"])
 def register():
     register_data = request.get_json()
     form_email = register_data["email"]
@@ -220,7 +223,5 @@ def chart_data():
 
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
 
