@@ -1,5 +1,6 @@
 from flask import request, jsonify, redirect
-from config import app
+from model import User, Bill, Split
+from config import app, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import timedelta, datetime

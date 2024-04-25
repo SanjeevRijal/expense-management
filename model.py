@@ -2,7 +2,7 @@ from sqlalchemy.orm import relationship
 from config import db
 
 class User(db.Model):
-    __tablename__ = "user_tabel"
+    __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(250), nullable=False)
@@ -25,7 +25,7 @@ class Bill(db.Model):
 
 
 class Split(db.Model):
-    __tablename__ = 'split'
+    __tablename__ = 'Split'
     id = db.Column(db.Integer, primary_key=True)
     split_with = db.Column(db.Integer, db.ForeignKey(User.id))
     bill_id = db.Column(db.Integer, db.ForeignKey(Bill.id))
