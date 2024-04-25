@@ -34,6 +34,7 @@ def register():
 def login():
     login_form_data = request.get_json()
     result = db.session.execute(db.select(User).where(User.email == login_form_data["userName"].lower()))
+    result = User.query.filter_by(email = login_form_data["userName"].lower()).first()
     if result and check_password_hash(result.password, login_form_data["password"]):
         user_data = {
             "name":result.name,
