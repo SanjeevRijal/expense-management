@@ -1,6 +1,6 @@
 from flask import request, jsonify, redirect
-from model import User,Bill,Split
-from config import app,db
+from model import User, Bill, Split
+from config import app, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import timedelta, datetime
@@ -33,9 +33,7 @@ def register():
 @app.route('/login', methods=["POST"])
 def login():
     login_form_data = request.get_json()
-    print("hi")
-    print(login_form_data)
-    result = User.query.filter_by(email = login_form_data["userName"].lower()).first()
+    result = db.session.execute(db.select(User).where(User.email == login_form_data["userName"].lower()))
     if result and check_password_hash(result.password, login_form_data["password"]):
         user_data = {
             "name":result.name,
@@ -63,12 +61,14 @@ def get_user():
         users_list.append({"userId": user.id, "name": user.name, f"shareWith{user.name}": False})
     return jsonify({'user': users_list})
 
+
 @app.route("/user_name")
 @jwt_required()
 def user_name():
     current_user = get_jwt_identity()
     user= User.query.filter(User.id == current_user).first()
     return user.name
+
 
 @app.route("/my_bill")
 @jwt_required()
@@ -92,6 +92,7 @@ def get_all_bill():
         all_bills_list.append({ "amount":all_bill.amount, "catagory": all_bill.spend_type,
                               "spend_date":date_str,"spenderName":all_bill.what_amount.name})
     return {"allBill":all_bills_list}
+
 
 @app.route("/add_bill", methods=["POST"])
 @jwt_required()
@@ -164,6 +165,7 @@ def final_payment():
 
     return final_payment_details
 
+
 @app.route("/validate_email" , methods = ["POST"])
 def send_email_link():
     user_email = request.get_json()["email"]
@@ -183,6 +185,7 @@ def verify_token(token):
     if not user:
         return "Invalid or expired reset token", 400
     return redirect(f"http://localhost:5173/password_update/{user.reset_token}", code=302)
+
 
 @app.route("/conform_token", methods = ["POST"])
 def conform_token():
@@ -213,6 +216,7 @@ def update_password():
 @jwt_required()
 def chart_data():
     return bill_detail()
+
 
 if __name__ == "__main__":
     with app.app_context():

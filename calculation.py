@@ -52,6 +52,5 @@ def bill_share_with():
                         to_share_amounts[each] = [split_amount]
                     else:
                         to_share_amounts[each].append(split_amount)
-
     to_pay_final = {keys:sum(value) for keys, value in to_share_amounts.items()}
     return to_pay_final
